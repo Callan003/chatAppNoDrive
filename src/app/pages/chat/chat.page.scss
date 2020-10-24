@@ -1,0 +1,122 @@
+.message {
+    padding: 10px !important;
+    border-radius: 10px !important;
+    margin-bottom: 4px !important;
+
+    img {
+      width: 100%;
+    }
+  }
+  .my-message {
+    background: var(--ion-color-tertiary);
+    color: #fff;
+  }
+  .other-message {
+    background: var(--ion-color-secondary);
+    color: #fff;
+  }
+
+.time {
+  color: #dfdfdf;
+  float: right;
+  font-size: small;
+}
+
+.col-msg-input {
+  margin: auto;
+}
+
+.message-input {
+  margin: auto;
+  display: block;
+  width: 100%;
+  min-height: 34px;
+  max-height: 100px;
+  border: 1px solid var(--ion-color-medium);
+  border-radius: 10px;
+  background: #fff;
+  resize: none;
+  overflow: hidden;
+  outline: none;
+  padding: 7px 10px;
+}
+
+.separator {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  padding: 15px 0;
+  color: lightgray;
+  font-size: small;
+}
+.separator::before, .separator::after {
+  content: '';
+  flex: 1;
+  border-bottom: 1px solid lightgray;;
+}
+.separator::before {
+  margin-right: .25em;
+}
+.separator::after {
+  margin-left: .25em;
+}
+
+.padding0 {
+  padding: 0 !important;
+}
+
+.msg-btn{
+  margin: auto;
+}
+.driving-warn{
+  font-size: xx-large;
+  margin: auto 1px;
+  color: var(--ion-color-danger, #eb445a) !important;
+}
+.blinkingCol{
+  margin: auto 0;
+}
+
+.fontAwesome{
+  font-family: 'Font Awesome\ 5 Free';
+  font-weight: 900;
+  font-style: normal;
+}
+
+
+.red-car{
+  color: red;
+}
+
+.white-car {
+  color: white;
+}
+
+.blink {
+  animation: blink-animation 1s steps(5, start) infinite;
+  -webkit-animation: blink-animation 1s steps(5, start) infinite;
+}
+@keyframes blink-animation {
+  to {
+    visibility: hidden;
+  }
+}
+@-webkit-keyframes blink-animation {
+  to {
+    visibility: hidden;
+  }
+}
+
+.spin {
+  margin: auto;
+  animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform:rotate(0deg);
+  }
+  to {
+    transform:rotate(360deg);
+  }
+}

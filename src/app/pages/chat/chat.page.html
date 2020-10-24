@@ -1,0 +1,82 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/chats"></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{ chat?.title }}</ion-title>
+    <ion-buttons slot="end">
+      <ion-button color="danger" fill="clear" style (click)="leave()">
+        <strong>Leave Chat</strong>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content #content padding>
+
+  <ion-grid>
+    <ion-row *ngFor="let message of messages | async, let i = index">
+
+      <ion-col size="12" *ngIf="displayBreakPoint(i)">
+        <div class="separator"> {{message.createdAt?.toDate() | date: 'medium'}} </div>
+      </ion-col>
+
+      <ion-col size="9" size-md="6" *ngIf="message.from !== currentUserId" class="message other-message">
+        <b>{{ message.user }}</b><br>
+        <span>{{ message.msg }}
+          <img [src]="message.file" *ngIf="message.file">
+        </span>
+        <div class="time" text-right>
+          <br>{{ message.createdAt?.toMillis() | date:'short' }}
+        </div>
+      </ion-col>
+     
+      <ion-col size="3" *ngIf="isUserDriving(message, 'otherUser')" (click)="toggleInfo(message, 'otherUser')" class="blinkingCol">
+        <ion-icon name="warning" class="driving-warn blink"></ion-icon>
+        <ion-icon name="car-sport-sharp" class="driving-warn blink"></ion-icon>
+      </ion-col>
+
+      <ion-col size="3" *ngIf="isUserDriving(message, 'currentUser')" (click)="toggleInfo(message, 'currentUser')" class="blinkingCol">
+        <ion-icon name="warning" class="driving-warn blink"></ion-icon>
+        <ion-icon name="car-sport-sharp" class="driving-warn blink"></ion-icon>
+      </ion-col>
+
+      <ion-col [offset]="isUserDriving(message, 'currentUser') ? '0': '3'" offset-md="6" size="9" size-md="6" *ngIf="message.from === currentUserId" class="message my-message">
+        <b>{{ message.user }}</b><br>
+        <span>{{ message.msg }}
+          <img [src]="message.file" *ngIf="message.file">
+        </span>
+        <div class="time" text-right><br>{{ message.createdAt?.toMillis() | date:'short' }}</div>
+      </ion-col>
+    
+    </ion-row>
+  </ion-grid>
+
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button (click)="toggleDriving()">
+      <ion-icon name='car' [ngClass]="overTheSpeedLimit ? 'red-car': 'white-car'"></ion-icon>
+    </ion-fab-button>
+    <ion-fab-button (click)="sendFile()">
+      <ion-icon name="camera"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+
+</ion-content>
+
+<ion-footer>
+  <ion-toolbar color="light">
+    <ion-row no-padding align-items-center>
+      <ion-col size="9" class="col-msg-input ion-no-margin">
+        <textarea class="message-input" id='messageTextarea' #input rows="1" maxLength="500" (keyup.enter)="sendMessage()" (keyup)="resize()" [(ngModel)]="newMsg"></textarea>
+      </ion-col>
+      <ion-col size="2" text-center>
+        <ion-button *ngIf="!this.sendingMessage" expand="block" fill="clear" color="primary" [disabled]="newMsg === ''" class="msg-btn" (click)="sendMessage()">
+          <ion-icon name="send" slot="icon-only"></ion-icon>
+        </ion-button>
+        <ion-button *ngIf="this.sendingMessage" expand="block" fill="clear" color="primary" class="spin">
+          <ion-icon name="sync" slot="icon-only"></ion-icon>
+        </ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-toolbar>
+</ion-footer>
