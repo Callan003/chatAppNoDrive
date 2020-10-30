@@ -48,13 +48,12 @@
         </span>
         <div class="time" text-right><br>{{ message.createdAt?.toMillis() | date:'short' }}</div>
       </ion-col>
-    
     </ion-row>
   </ion-grid>
 
   <ion-fab vertical="bottom" horizontal="end" slot="fixed">
-    <ion-fab-button (click)="toggleDriving()">
-      <ion-icon name='car' [ngClass]="overTheSpeedLimit ? 'red-car': 'white-car'"></ion-icon>
+    <ion-fab-button (click)="presentModal()">
+      <ion-icon name="settings"></ion-icon>
     </ion-fab-button>
     <ion-fab-button (click)="sendFile()">
       <ion-icon name="camera"></ion-icon>

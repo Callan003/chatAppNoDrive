@@ -82,6 +82,12 @@
   }
   text-align: center;
 }
+.settings-modal .modal-wrapper{
+  height: 260px;
+  width: 90%;
+  margin: 0 16px;
+  border-radius: 8px;
+}
 
 @media (prefers-color-scheme: dark) {
   /*

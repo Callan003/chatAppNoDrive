@@ -3,12 +3,14 @@ import { ChatService } from '../../services/chat.service';
 import { AuthService } from '../../services/auth.service';
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { IonContent, ToastController } from '@ionic/angular';
+import {IonContent, ModalController, ToastController} from '@ionic/angular';
 import { map, tap } from 'rxjs/operators';
 import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
+import { SettingsModalComponent } from './settings-modal/settings-modal.component';
 import { HttpClient } from '@angular/common/http';
 import * as moment from 'moment';
+
 
 import 'src/typingdna.js';
 declare var TypingDNA: any;
@@ -29,6 +31,9 @@ export class ChatPage implements OnInit {
   currentDate: moment.Moment;
   breakPoints = [];
   typingDnaRecorder = null;
+  driving = false;
+  alerts = false;
+  quality = 2;
 
   @ViewChild(IonContent) content: IonContent;
   @ViewChild('input', { read: ElementRef }) msgInput: ElementRef;
@@ -50,7 +55,8 @@ export class ChatPage implements OnInit {
     private camera: Camera,
     private geolocation: Geolocation,
     public toastController: ToastController,
-    private http: HttpClient) {
+    private http: HttpClient,
+    public modalController: ModalController) {
       this.typingDnaRecorder = new TypingDNA();
     }
 
@@ -84,30 +90,66 @@ export class ChatPage implements OnInit {
       text: this.newMsg,
     };
     const typingPattern = this.typingDnaRecorder.getTypingPattern(this.optionObject);
-
     if (this.overTheSpeedLimit) {
       if (!!typingPattern){
       this.sendingMessage = true;
       this.verifyTypingPattern(typingPattern).subscribe((result: any) => {
+        if (this.alerts){
+          this.toastMessage(result);
+        }
         this.sendMessageToFirebase(result.result === 0);
       }, error => {
+        if (this.alerts) {
+          this.toastMessage(error);
+        }
         this.sendMessageToFirebase(false);
       });
       }
     } else {
       if (!!typingPattern){
         this.saveTypingPattern(typingPattern).subscribe(result => {
+          if (this.alerts){
+            this.toastMessage(result);
+          }
         }, error => {
+          if (this.alerts) {
+            this.toastMessage(error);
+          }
         });
       }
       this.sendMessageToFirebase(false);
     }
   }
 
-  toggleDriving() {
-    if (!!this.geoSubscription){
-      this.geoSubscription.unsubscribe();
-      this.geoSubscription = null;
+  async presentModal() {
+    const modal = await this.modalController.create({
+      component: SettingsModalComponent,
+      cssClass: 'settings-modal',
+      componentProps: {
+        driving: this.driving,
+        alerts: this.alerts,
+        quality: this.quality
+      }
+    });
+
+    modal.onDidDismiss().then(response => {
+      if (response) {
+        this.driving = response.data.driving;
+        this.alerts = response.data.alerts;
+        this.toggleDriving(this.driving);
+        this.quality = response.data.quality;
+      }
+    });
+
+    return await modal.present();
+  }
+
+  toggleDriving(driving) {
+    if (driving){
+      if (!!this.geoSubscription) {
+        this.geoSubscription.unsubscribe();
+        this.geoSubscription = null;
+      }
       this.overTheSpeedLimit = true;
     } else {
       this.startGeolocation();
@@ -134,9 +176,13 @@ export class ChatPage implements OnInit {
     toast.present();
   }
 
+  async toastMessage(message) {
+    alert(JSON.stringify(message));
+  }
+
   verifyTypingPattern(typingPattern) {
     return this.http.post(this.backendUrl + '/verifyTypingPattern',
-     {userId: this.currentUserId, tp: typingPattern, quality: 2, });
+     {userId: this.currentUserId, tp: typingPattern, quality: this.quality, });
   }
 
   saveTypingPattern(typingPattern){

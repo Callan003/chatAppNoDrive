@@ -1,0 +1,28 @@
+<div class="dialog-title">
+  <span>Developer's Settings </span>
+  <ion-icon name="close" slot="end" (click)="close()"></ion-icon>
+</div>
+
+<div class="dialog-description">
+  <ion-item>
+    <ion-label>Simulate Driving &nbsp; </ion-label>
+    <ion-icon name='car-sport' [color]="driving ? 'danger': 'dark'"></ion-icon>
+    <ion-toggle color="danger" (ionChange)="driving = !driving" [checked]="driving"></ion-toggle>
+  </ion-item>
+  <ion-item>
+    <ion-label>Show alerts &nbsp;</ion-label>
+    <ion-icon name="warning" [color]="alerts ? 'danger': 'dark'"></ion-icon>
+    <ion-toggle color="danger" (ionChange)="alerts = !alerts" [checked]="alerts"></ion-toggle>
+  </ion-item>
+  <ion-item>
+    <ion-label>Quality (1-3)&nbsp;</ion-label>
+    <ion-input name="quality" (ionChange)="changeQuality($event)" text-right type="number" color="danger" max="3" min="1" [value]="quality">
+    </ion-input>
+    <ion-icon name="finger-print" class="rm15" slot="end"></ion-icon>
+  </ion-item>
+
+</div>
+
+<span class="dialog-actions">
+  <span (click)="confirmAction()" class="confirmAction"> Save </span>
+</span>
