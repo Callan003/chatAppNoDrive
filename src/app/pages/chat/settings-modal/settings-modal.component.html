@@ -4,22 +4,24 @@
 </div>
 
 <div class="dialog-description">
+  <ion-list>
   <ion-item>
     <ion-label>Simulate Driving &nbsp; </ion-label>
     <ion-icon name='car-sport' [color]="driving ? 'danger': 'dark'"></ion-icon>
-    <ion-toggle color="danger" (ionChange)="driving = !driving" [checked]="driving"></ion-toggle>
+    <ion-checkbox color="danger" (ionChange)="changeDriving($event)" [checked]="driving" ></ion-checkbox>
   </ion-item>
   <ion-item>
     <ion-label>Show alerts &nbsp;</ion-label>
     <ion-icon name="warning" [color]="alerts ? 'danger': 'dark'"></ion-icon>
-    <ion-toggle color="danger" (ionChange)="alerts = !alerts" [checked]="alerts"></ion-toggle>
+    <ion-checkbox color="danger" (ionChange)="changeAlerts($event)" [checked]="alerts"></ion-checkbox>
   </ion-item>
   <ion-item>
     <ion-label>Quality (1-3)&nbsp;</ion-label>
     <ion-input name="quality" (ionChange)="changeQuality($event)" text-right type="number" color="danger" max="3" min="1" [value]="quality">
     </ion-input>
-    <ion-icon name="finger-print" class="rm15" slot="end"></ion-icon>
+    <ion-icon name="finger-print" class="rm05" slot="end"></ion-icon>
   </ion-item>
+  </ion-list>
 
 </div>
 

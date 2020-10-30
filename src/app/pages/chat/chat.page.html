@@ -77,5 +77,10 @@
         </ion-button>
       </ion-col>
     </ion-row>
+    <ion-row *ngIf="alerts || driving">
+      <ion-col>
+        driving: {{overTheSpeedLimit}} alerts: {{alerts}}
+      </ion-col>
+    </ion-row>
   </ion-toolbar>
 </ion-footer>

@@ -10,7 +10,6 @@ export class SettingsModalComponent {
   @Input() alerts: boolean;
   @Input() driving: boolean;
   @Input() quality: number;
-  ngquality = 2;
 
   constructor(private modalController: ModalController) { }
 
@@ -30,5 +29,12 @@ export class SettingsModalComponent {
     if (!!$event['detail'].value) {
       this.quality = $event['detail'].value;
     }
+  }
+
+  changeDriving($event: any) {
+    this.driving = $event['detail'].checked;
+  }
+  changeAlerts($event: any) {
+    this.alerts = $event['detail'].checked;
   }
 }

@@ -119,6 +119,8 @@ export class ChatPage implements OnInit {
       }
       this.sendMessageToFirebase(false);
     }
+    this.typingDnaRecorder.reset();
+    this.typingDnaRecorder.start();
   }
 
   async presentModal() {

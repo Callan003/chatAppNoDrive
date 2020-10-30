@@ -8,8 +8,9 @@
 }
 .dialog-description{
   margin: 0 16px;
-  ion-toggle{
+  ion-checkbox{
     vertical-align: middle;
+    margin: 0 10px;
   }
   ion-icon{
     font-size: 25px;
@@ -24,8 +25,8 @@
   }
 }
 
-.rm15{
-  margin-right: 15px !important;
+.rm05{
+  margin-right: 5px !important;
 }
 
 .dialog-actions{
