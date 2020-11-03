@@ -135,7 +135,7 @@ export class ChatPage implements OnInit {
     });
 
     modal.onDidDismiss().then(response => {
-      if (response) {
+      if (response.data) {
         this.driving = response.data.driving;
         this.alerts = response.data.alerts;
         this.toggleDriving(this.driving);
@@ -146,8 +146,8 @@ export class ChatPage implements OnInit {
     return await modal.present();
   }
 
-  toggleDriving(driving) {
-    if (driving){
+  toggleDriving(driving: boolean) {
+    if (driving === true){
       if (!!this.geoSubscription) {
         this.geoSubscription.unsubscribe();
         this.geoSubscription = null;
